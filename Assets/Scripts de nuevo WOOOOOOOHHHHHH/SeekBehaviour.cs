@@ -11,23 +11,33 @@ public class SeekBehaviour : SterringBehaviour
     public override Vector3 GetForce()
     {
         Position = transform.position;
-        if(arrival==false)
+
+        DesiredVelocity = (Target - Position).normalized * speed;
+        float distance = (Target - Position).magnitude;
+
+        
+        if (distance < slowingRadius)
         {
-            DesiredVelocity = (Target - Position).normalized * speed;
+            arrival = true;
+            
         }
-        if(arrival==true)
+        else
         {
-            DesiredVelocity = (Target - Position).normalized * speed;
-            float distance=(Target-Position).magnitude;
-            if(distance<slowingRadius)
-            {
-                DesiredVelocity = DesiredVelocity.normalized * speed * (distance / slowingRadius);
-            }
-            else
-            {
-                DesiredVelocity = DesiredVelocity.normalized * speed;
-            }
+            arrival = false;
+            
         }
+
+        //Empieza disminuir si es que esta cerca del Slowing  Radius, solo si el arrival es true
+        if (arrival == true)
+        {
+            DesiredVelocity = DesiredVelocity.normalized * speed * (distance / slowingRadius);
+        }
+        else
+        {
+            DesiredVelocity = DesiredVelocity.normalized * speed;
+        }
+
+
         Vector3 steering = DesiredVelocity - Velocity;
         Velocity = Vector3.ClampMagnitude(Velocity + steering, speed);
         transform.position += Velocity * Time.deltaTime;
