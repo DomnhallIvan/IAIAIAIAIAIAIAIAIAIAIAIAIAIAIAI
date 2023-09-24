@@ -5,26 +5,26 @@ using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour
 {
+    private static PlayerController instance;
+
+    [SerializeField] private LayerMask mousePlaneLayerMask;
+
     private Vector3 _target;
     private BehaviourController _behaviourController;
     public List<SterringBehaviour> enemies=new List<SterringBehaviour>();
 
-    private void Start()
+    private void Awake()
     {
         _behaviourController = gameObject.GetComponent<BehaviourController>();
+        instance = this;
         
     }
 
     private void FixedUpdate()
     {
-        _target = transform.position;
+        transform.position=PlayerController.GetPosition();
 
-        //Esto es para que el GameObject Player persiga al mouse
-        /*
-        foreach(SterringBehaviour behaviour in _behaviourController.behaviours)
-        {
-            behaviour.Target = _target;
-        }*/
+        _target = transform.position;
 
         //Esto es para que los enemigos persigan al jugador
         if (enemies != null) AssignPositionToEnemies();
@@ -36,6 +36,15 @@ public class PlayerController : MonoBehaviour
         {
             enemies.Target = _target;
         }
+    }
+
+    //Static significa que solo pertenecerá a la clase en sí y no a ninguna instancia de la clase
+    //El Raycast checa donde esta golpeando y regresará el Vector3 o sea la posición.
+    public static Vector3 GetPosition()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, instance.mousePlaneLayerMask);
+        return raycastHit.point;
     }
 
 
