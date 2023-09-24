@@ -14,10 +14,17 @@ public class BehaviourController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //Debug.Log(rb.velocity.magnitude);
+        if (_velocity.magnitude > maxSpeed)
+        {
+            _velocity = Vector3.ClampMagnitude(_velocity, maxSpeed);
+        }
+
         _totalForce = Vector3.zero;
         //Aquí busco por el tipo de Sterring Behaviour que tenga para obtener el tipo de GetForce Respectivo
         foreach(SterringBehaviour behaviour in behaviours)
         {
+            
             _totalForce += behaviour.GetForce();
         }
         //Aquí se hace la suma para actualizar el movimiento de la clase respectiva

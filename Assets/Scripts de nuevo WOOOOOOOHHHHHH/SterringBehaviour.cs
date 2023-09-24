@@ -13,6 +13,7 @@ public abstract class SterringBehaviour : MonoBehaviour
     public Vector3 Velocity;
     public Vector3 Position;
     public Vector3 Target;
+    public Rigidbody rb;
     public abstract Vector3 GetForce();
 
 }

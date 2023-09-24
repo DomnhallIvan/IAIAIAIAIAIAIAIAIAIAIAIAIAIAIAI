@@ -22,9 +22,9 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        transform.position=PlayerController.GetPosition();
+        transform.position=GetPosition();
 
-        _target = transform.position;
+        _target = GetPosition();
 
         //Esto es para que los enemigos persigan al jugador
         if (enemies != null) AssignPositionToEnemies();

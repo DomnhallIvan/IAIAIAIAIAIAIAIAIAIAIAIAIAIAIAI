@@ -17,17 +17,22 @@ public class RUNBEEPRUUUN : SterringBehaviour
         DesiredVelocity = (Position - Target).normalized * speed;
         float distance = (Target - Position).magnitude;
 
+       
         //Si la distancia es menor al RunawayCircle entonces correrá con la velocidad normal
         if (distance < runAwayCircle)
         {
-            DesiredVelocity = DesiredVelocity.normalized * speed * (runAwayCircle / distance); 
-
+            DesiredVelocity = DesiredVelocity.normalized * speed * (runAwayCircle / distance);
+            
         }
         else 
         {
-            DesiredVelocity = DesiredVelocity.normalized * speed / (runAwayCircle / distance) * 0;
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            rb.useGravity = true;
+            DesiredVelocity=Vector3.zero;
+            
         }
-        
+
         /*//Si la distancia es menor que el safeRadius su velocidad se reducirá dependiendo de que tan cerco este el jugador
         else if(distance < safeRadius)
         {
@@ -36,7 +41,16 @@ public class RUNBEEPRUUUN : SterringBehaviour
         else
         {
             DesiredVelocity = Vector3.zero;
-        } */                     
+        } */
+
+       
+        
+        //Esto es para que no se descontrole el enemigo con la velocidad
+        Debug.Log(rb.velocity.magnitude);
+        if (rb.velocity.magnitude > speed)
+        {
+           rb.velocity = Vector3.ClampMagnitude(rb.velocity, speed);
+        }
 
         Vector3 steering = DesiredVelocity - Velocity;
         Velocity = Vector3.ClampMagnitude(Velocity + steering, speed);
