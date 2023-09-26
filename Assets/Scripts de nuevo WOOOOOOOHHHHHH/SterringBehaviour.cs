@@ -9,11 +9,10 @@ public abstract class SterringBehaviour : MonoBehaviour
     //Position Se refiere al transform.position original de la clase que lo vaya a usar (Ej. el enemigo)
     //Por último Vector3 GetForce va a ser la función en el que se calcule todo lo de Seek, desired velocity, steering después Velocity y por último la actualización del transform.position
     public float speed;
-    public Vector3 DesiredVelocity;
-    public Vector3 Velocity;
-    public Vector3 Position;
-    public Vector3 Target;
-    public Rigidbody rb;
+    public Vector3 DesiredVelocity { get; set; }
+    public Vector3 Velocity { get; set; }
+    public Vector3 Position { get; set; }
+    public Vector3 Target { get; set; }
     public abstract Vector3 GetForce();
 
 }

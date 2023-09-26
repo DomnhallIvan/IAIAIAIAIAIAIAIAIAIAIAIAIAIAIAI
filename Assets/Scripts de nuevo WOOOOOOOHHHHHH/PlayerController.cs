@@ -43,9 +43,10 @@ public class PlayerController : MonoBehaviour
     public static Vector3 GetPosition()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, instance.mousePlaneLayerMask);
-        return raycastHit.point;
+        Physics.Raycast(ray , out RaycastHit raycastHit, float.MaxValue, instance.mousePlaneLayerMask);
+        return new Vector3(raycastHit.point.x,2,raycastHit.point.z);
     }
+
 
 
 }

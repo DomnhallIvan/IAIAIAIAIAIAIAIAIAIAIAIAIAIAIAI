@@ -14,22 +14,26 @@ public class BehaviourController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //Debug.Log(rb.velocity.magnitude);
-        if (_velocity.magnitude > maxSpeed)
-        {
-            _velocity = Vector3.ClampMagnitude(_velocity, maxSpeed);
-        }
+       
 
         _totalForce = Vector3.zero;
+
+       
+
         //Aquí busco por el tipo de Sterring Behaviour que tenga para obtener el tipo de GetForce Respectivo
-        foreach(SterringBehaviour behaviour in behaviours)
+        foreach (SterringBehaviour behaviour in behaviours)
         {
-            
+            behaviour.Position = transform.position;
+            _velocity = behaviour.Velocity;
             _totalForce += behaviour.GetForce();
         }
+
+        
+
         //Aquí se hace la suma para actualizar el movimiento de la clase respectiva
         //Estas son las últimas dos líneas de todos los Steering originales, _velocity=es lo que hayamos obtenido del GetForce, y el transform.position se actualiza acorde.
         _velocity += _totalForce;
+        
         transform.position += _velocity * Time.deltaTime;
     }
 

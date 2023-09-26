@@ -12,50 +12,35 @@ public class RUNBEEPRUUUN : SterringBehaviour
 
     public override Vector3 GetForce()
     {
-        Position = transform.position;
-
         DesiredVelocity = (Position - Target).normalized * speed;
         float distance = (Target - Position).magnitude;
+
+        Vector3 steering = DesiredVelocity - Velocity;
+        Velocity = Vector3.ClampMagnitude(Velocity + steering, speed);
 
        
         //Si la distancia es menor al RunawayCircle entonces correrá con la velocidad normal
         if (distance < runAwayCircle)
         {
-            DesiredVelocity = DesiredVelocity.normalized * speed * (runAwayCircle / distance);
-            
+            Debug.Log("Esta ADENTRO, pero que no cunda el pánico");
+            DesiredVelocity = (DesiredVelocity).normalized * speed * (runAwayCircle / distance);
+            return steering;
         }
-        else 
+        if(distance<runAwayCircle&&distance>safeRadius)
         {
-            rb.velocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
-            rb.useGravity = true;
-            DesiredVelocity=Vector3.zero;
-            
+            Debug.Log($"Factor reducion: {distance / safeRadius}");
+            Debug.Log("Estoy Safe");
+            var distanceFRadius = distance / safeRadius;
+
+            DesiredVelocity = (DesiredVelocity).normalized * speed * distanceFRadius;
+
+            return steering;
+
         }
 
-        /*//Si la distancia es menor que el safeRadius su velocidad se reducirá dependiendo de que tan cerco este el jugador
-        else if(distance < safeRadius)
-        {
-            DesiredVelocity = DesiredVelocity.normalized * speed * (distance / safeRadius);
-        }
-        else
-        {
-            DesiredVelocity = Vector3.zero;
-        } */
+        Velocity = Vector3.zero;
+        return Vector3.zero;
 
-       
-        
-        //Esto es para que no se descontrole el enemigo con la velocidad
-        Debug.Log(rb.velocity.magnitude);
-        if (rb.velocity.magnitude > speed)
-        {
-           rb.velocity = Vector3.ClampMagnitude(rb.velocity, speed);
-        }
-
-        Vector3 steering = DesiredVelocity - Velocity;
-        Velocity = Vector3.ClampMagnitude(Velocity + steering, speed);
-        transform.position += Velocity * Time.deltaTime;
-        return steering;
     }
 
 }
