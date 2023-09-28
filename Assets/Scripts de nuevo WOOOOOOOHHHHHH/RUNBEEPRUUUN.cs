@@ -23,7 +23,7 @@ public class RUNBEEPRUUUN : SterringBehaviour
         if (distance < runAwayCircle)
         {
             Debug.Log("Esta ADENTRO, pero que no cunda el pánico");
-            DesiredVelocity = (DesiredVelocity).normalized * speed * (runAwayCircle / distance);
+            DesiredVelocity = (DesiredVelocity).normalized * speed * (runAwayCircle/distance );
             return steering;
         }
         if(distance<runAwayCircle&&distance>safeRadius)

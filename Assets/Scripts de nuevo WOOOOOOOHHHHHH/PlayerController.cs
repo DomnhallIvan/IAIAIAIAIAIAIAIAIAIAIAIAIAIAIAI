@@ -6,9 +6,14 @@ using UnityEngine.EventSystems;
 public class PlayerController : MonoBehaviour
 {
     private static PlayerController instance;
-
     [SerializeField] private LayerMask mousePlaneLayerMask;
 
+    //Esto es para el Pursuit
+    public Vector3 previousPosition;
+    //public Vector3 futurePos;
+    public Vector3 velocity;
+
+    //Esto es para el Seek
     private Vector3 _target;
     private BehaviourController _behaviourController;
     public List<SterringBehaviour> enemies=new List<SterringBehaviour>();
@@ -22,7 +27,12 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+
+        previousPosition = transform.position;
+
         transform.position=GetPosition();
+
+        velocity = (transform.position - previousPosition) / Time.deltaTime;
 
         _target = GetPosition();
 
