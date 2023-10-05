@@ -21,10 +21,10 @@ public class PursuitBehaviour : SterringBehaviour
     public override Vector3 GetForce()
     {
 
-        return Seek();
+        return FlyAway();
     }
 
-    private Vector3 Seek()
+    private Vector3 FlyAway()
     {
         Position = transform.position;
         Target = pursuitTarget.transform.position;
